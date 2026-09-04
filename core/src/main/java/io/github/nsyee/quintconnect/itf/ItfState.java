@@ -13,17 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.nsyee.quintconnect;
+package io.github.nsyee.quintconnect.itf;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.util.Objects;
 
-import org.junit.jupiter.api.Test;
+/**
+ * One state of an {@link ItfTrace}.
+ *
+ * @param index the state index from {@code #meta.index} (or the position in the trace when the tool
+ *     did not emit one)
+ * @param value the state variables as a record, without the {@code #meta} entry
+ */
+public record ItfState(int index, ItfValue.Record value) {
 
-/** Keeps the test task non-empty until the real modules land. */
-class PlaceholderTest {
-
-  @Test
-  void buildIsWired() {
-    assertEquals(21, Runtime.version().feature());
+  /** Creates a state, rejecting a {@code null} value. */
+  public ItfState {
+    Objects.requireNonNull(value, "value");
   }
 }
