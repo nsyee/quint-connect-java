@@ -8,6 +8,10 @@ plugins {
 allprojects {
     group = "io.github.nsyee"
     version = "0.1.0-SNAPSHOT"
+
+    repositories {
+        mavenCentral()
+    }
 }
 
 spotless {
@@ -34,10 +38,6 @@ subprojects {
     apply(plugin = "java-library")
     apply(plugin = "com.diffplug.spotless")
     apply(plugin = "net.ltgt.errorprone")
-
-    repositories {
-        mavenCentral()
-    }
 
     extensions.configure<JavaPluginExtension> {
         toolchain {
