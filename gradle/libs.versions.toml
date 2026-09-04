@@ -1,0 +1,22 @@
+[versions]
+jdk = "21"
+jackson = "2.22.2"
+java-diff-utils = "4.17"
+junit = "6.1.3"
+error-prone = "2.50.0"
+gjf = "1.36.1"
+spotless = "8.10.1"
+errorprone-plugin = "5.1.1"
+
+[libraries]
+jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson" }
+java-diff-utils = { module = "io.github.java-diff-utils:java-diff-utils", version.ref = "java-diff-utils" }
+junit-bom = { module = "org.junit:junit-bom", version.ref = "junit" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter" }
+junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
+junit-platform-testkit = { module = "org.junit.platform:junit-platform-testkit" }
+errorprone-core = { module = "com.google.errorprone:error_prone_core", version.ref = "error-prone" }
+
+[plugins]
+spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
+errorprone = { id = "net.ltgt.errorprone", version.ref = "errorprone-plugin" }
