@@ -12,5 +12,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Gradle multi-project skeleton (`core`, `junit`, `examples`), Java 21
   toolchain, Spotless (google-java-format) and Error Prone.
 - GitHub Actions CI on Ubuntu and Windows with the Quint CLI installed.
+- `itf` package: `ItfValue` sealed hierarchy with order-insensitive `Set`/`Map`
+  equality, `ItfTrace`/`ItfState`/`ItfMeta`, `ItfParser` for ITF JSON
+  (`#bigint`, `#tup`, `#set`, `#map`, `#unserializable`, `#meta`, `loop`),
+  `ItfValues.asOption` and the Quint-like pretty-printer `ItfDisplay`.
 
 [Unreleased]: https://github.com/nsyee/quint-connect-java/compare/main...HEAD
