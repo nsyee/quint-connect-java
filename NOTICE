@@ -1,0 +1,8 @@
+quint-connect-java
+Copyright 2026 the quint-connect-java authors
+
+This product is a Java port of quint-connect
+(https://github.com/informalsystems/quint-connect),
+Copyright Informal Systems, licensed under the Apache License, Version 2.0.
+Command-line construction, step extraction, value display and error messages
+are derived from that project.
