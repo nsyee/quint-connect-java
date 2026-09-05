@@ -59,7 +59,7 @@ import java.util.stream.Stream;
 public final class QuintConnect {
 
   /** Message when the generator produced no trace. */
-  static final String ZERO_TRACES =
+  public static final String ZERO_TRACES =
       """
       Trace generation produced zero traces.
       Please check your specification and/or your test configuration.""";
