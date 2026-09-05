@@ -393,7 +393,8 @@ silently. Tests of the extension itself swap the trace generator by registering
   with non-string keys, optional picks (`corner?`, `coordinate?`).
 - `two_phase_commit`: port of `system.rs` (coordinator/participant state
   machines) and the Choreo-based spec; demonstrates `DriverConfig` with
-  `statePath("two_phase_commit::choreo::s", "system")` and
+  `statePath("two_phase_commit::choreo::s")` (the checked state is a record
+  `{ system }`, since `Class<S>` cannot name a `Map<String, ProcState>`) and
   `nondetPath("two_phase_commit::choreo::s", "extensions", "actionTaken")`,
   and both `@QuintRun` and `@QuintTest`.
 
