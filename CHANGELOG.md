@@ -40,5 +40,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   deserialize specification's state" hint; `to(type)` yields a `Step.pick`
   converter; `toItf(Object)` maps Java values back to canonical (sorted)
   `ItfValue`s for diff rendering.
+- `log` package: `Logger` with `title`/`info`/`success`/`error`/`trace`,
+  three-space indentation of multi-line messages, ANSI colors (`NO_COLOR`,
+  `FORCE_COLOR`, `TERM`) and verbosity from `QUINT_VERBOSE` (property/env).
+- `runner` package: `QuintConnect.run(name, driverSupplier, config)`
+  orchestrating trace generation and replay like the Rust `runner` module
+  (zero-trace and anonymous-action checks, per-step `driver.step`, spec vs.
+  implementation state comparison with a unified diff, `[OK]`/`[FAIL]` and
+  the `QUINT_SEED` reproduction hint), `QuintConnect.traces(...)` streaming
+  one `TraceRun` per generated trace, `StateDiff` and `QuintConnectException`
+  carrying trace/step/action context.
 
 [Unreleased]: https://github.com/nsyee/quint-connect-java/compare/main...HEAD
