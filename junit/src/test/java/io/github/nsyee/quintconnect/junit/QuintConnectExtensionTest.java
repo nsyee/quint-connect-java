@@ -418,7 +418,9 @@ class QuintConnectExtensionTest {
   void generatesTracesWithTheQuintCliByDefault() {
     EngineExecutionResults results = execute(RealCli.class);
 
-    results.containerEvents().assertStatistics(stats -> stats.failed(0));
+    assertEquals(
+        List.of(),
+        results.containerEvents().failed().stream().map(e -> failure(e).toString()).toList());
     results.testEvents().assertStatistics(stats -> stats.started(2).succeeded(2));
     assertEquals(
         List.of("[Trace 1/2] seed=0x42", "[Trace 2/2] seed=0x42"),

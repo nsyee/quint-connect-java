@@ -61,7 +61,7 @@ final class SpecPaths {
     if (!Files.isRegularFile(path)) {
       throw new JUnitException(
           "Specification file not found: "
-              + path
+              + spec
               + " (resolved against "
               + Path.of("").toAbsolutePath()
               + ")");
