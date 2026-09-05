@@ -347,17 +347,26 @@ disabled when `NO_COLOR` is set or the console is not a TTY, verbosity from
 
 ## 6. Module `junit` — JUnit 5 integration
 
-The proc macros become annotations on a factory method that returns a `Driver`:
+The proc macros become annotations on a test method that receives a
+`TraceReplay` and hands it the driver to replay against:
 
 ```java
 class TicTacToeMbt {
   @QuintRun(spec = "spec/tictactoe.qnt", maxSamples = 1)
-  Driver<GameState> simulation() { return new TicTacToeDriver(); }
+  void simulation(TraceReplay traces) { traces.replay(TicTacToeDriver::new); }
 
   @QuintTest(spec = "spec/two_phase_commit.qnt", test = "commitTest")
-  Driver<SpecState> commit() { return new TwoPhaseCommitDriver(); }
+  void commit(TraceReplay traces) { traces.replay(TwoPhaseCommitDriver::new); }
 }
 ```
+
+`TraceReplay.replay(Supplier)` creates the driver once per annotated method and
+reuses it for every invocation (the Rust runner shares one driver across all
+traces); `replay(Driver)` uses the given instance. A method that does not call
+`replay` fails with a configuration error so a forgotten call cannot pass
+silently. Tests of the extension itself swap the trace generator by registering
+`QuintConnectExtension.runner(QuintConnect.using(FileTraceGenerator…))` with
+`@RegisterExtension`.
 
 - `@QuintRun(spec, main, init, step, maxSamples, maxSteps, seed)` and
   `@QuintTest(spec, main, test, maxSamples, seed)` are `@TestTemplate`
