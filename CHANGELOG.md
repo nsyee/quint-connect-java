@@ -50,5 +50,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   the `QUINT_SEED` reproduction hint), `QuintConnect.traces(...)` streaming
   one `TraceRun` per generated trace, `StateDiff` and `QuintConnectException`
   carrying trace/step/action context.
+- `junit` module: `@QuintRun` / `@QuintTest` `@TestTemplate` meta-annotations
+  backed by `QuintConnectExtension` (one invocation per generated trace named
+  `[Trace i/n] seed=…`, `singleInvocation` for one test = all traces, `spec`
+  resolved as project-relative / absolute / `classpath:` resource, Rust
+  validation messages such as ``Missing required attribute `spec` ``), the
+  injected `TraceReplay` parameter (`replay(driverSupplier)` shares one driver
+  across traces, `replay(driver)`), `QuintConnectExtension.runner(...)` to
+  swap the trace generator in tests, and the `QuintDynamicTests.of(...)`
+  `@TestFactory` helper.
 
 [Unreleased]: https://github.com/nsyee/quint-connect-java/compare/main...HEAD
