@@ -29,5 +29,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `mbt::actionTaken`/`mbt::nondetPicks` mode and the sum-type-at-a-path mode
   with the upstream error messages, `Step.unimplemented(step)` and the
   `Actions` fluent dispatcher (unmatched actions fail by default).
+- `itf.mapper` package: `ItfMapper` (Jackson `ObjectMapper` + `ItfModule`)
+  mapping `ItfValue` to user types — `#bigint` → `int`/`long`/`BigInteger`
+  with overflow and coercion errors, `#set` → `Set`, `#map` with non-string
+  keys → `Map<K,V>`, `#tup` → record (positional) or `List`, records with
+  required non-`Optional` components, `Optional<T>` from `Some`/`None`,
+  sealed interfaces from `{ tag, value }` (variant by simple name or
+  `@ItfVariant`, 0/1/N components, nested sealed roots) and tag-only sum types
+  → `enum`. `stateFromItf` wraps failures with the upstream "Failed to
+  deserialize specification's state" hint; `to(type)` yields a `Step.pick`
+  converter; `toItf(Object)` maps Java values back to canonical (sorted)
+  `ItfValue`s for diff rendering.
 
 [Unreleased]: https://github.com/nsyee/quint-connect-java/compare/main...HEAD
