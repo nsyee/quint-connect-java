@@ -145,13 +145,16 @@ a `FileTraceGenerator` injected through an extension parameter for tests.
   or to GitHub Packages (to decide); `CHANGELOG` 0.1.0; release workflow on
   tag; Dependabot for Gradle and Actions.
 
-## PR10 — Optional: Apalache / TLA+ trace generator (M)
+## PR10 — Optional: Apalache / TLA+ trace generator (M) — done
 
-- `ApalacheTraceGenerator` + `ApalacheConfig` (`apalache-mc check --out-itf`),
-  executable lookup, docs on the `actionTaken` modelling convention and
-  `\* @type` annotations.
+- `ApalacheTraceGenerator` + `ApalacheConfig` (`apalache-mc simulate` /
+  `apalache-mc check`; Apalache 0.62 writes the ITF traces into `--run-dir`,
+  no `--out-itf` needed), executable lookup
+  (`ApalacheCli`, `APALACHE_BIN`), docs on the `mbt_action_taken` modelling
+  convention and `\* @type` annotations (`docs/apalache.md`).
 - Example: a small TLA+ counter spec with `mbt_action_taken`, driven through
   `DriverConfig.nondetPath("mbt_action_taken")`.
+- Implemented before PR9 (they are independent).
 
 ## Cross-cutting checklist (every PR)
 

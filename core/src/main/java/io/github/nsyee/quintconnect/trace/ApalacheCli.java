@@ -21,47 +21,47 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Locates the Quint executable.
+ * Locates the Apalache executable.
  *
  * <p>Resolution order:
  *
  * <ol>
- *   <li>the {@code QUINT_BIN} system property, then the {@code QUINT_BIN} environment variable;
- *   <li>{@code quint.cmd} on Windows, {@code quint} elsewhere, searched on {@code PATH}.
+ *   <li>the {@code APALACHE_BIN} system property, then the {@code APALACHE_BIN} environment
+ *       variable;
+ *   <li>{@code apalache-mc.bat} on Windows, {@code apalache-mc} elsewhere, searched on {@code
+ *       PATH}.
  * </ol>
  */
-public final class QuintCli {
+public final class ApalacheCli {
 
   /** Name of the system property / environment variable overriding the executable. */
-  public static final String QUINT_BIN = "QUINT_BIN";
+  public static final String APALACHE_BIN = "APALACHE_BIN";
 
   static final String INSTALL_HINT =
-      "Quint not found. Install with `npm i -g @informalsystems/quint` or point "
-          + QUINT_BIN
+      "Apalache not found. Download a release from https://github.com/apalache-mc/apalache/releases,"
+          + " put its bin/ directory on PATH or point "
+          + APALACHE_BIN
           + " to the executable.";
 
   private final String executable;
 
-  private QuintCli(String executable) {
+  private ApalacheCli(String executable) {
     this.executable = executable;
   }
 
-  /** Resolves the executable from {@code QUINT_BIN} or the default name for this OS. */
-  public static QuintCli locate() {
-    return locate(Executables.override(QUINT_BIN), Executables.isWindows());
+  /** Resolves the executable from {@code APALACHE_BIN} or the default name for this OS. */
+  public static ApalacheCli locate() {
+    return locate(Executables.override(APALACHE_BIN), Executables.isWindows());
   }
 
   /** Uses the given executable as-is (name on {@code PATH} or a path). */
-  public static QuintCli of(String executable) {
-    return new QuintCli(executable);
+  public static ApalacheCli of(String executable) {
+    return new ApalacheCli(executable);
   }
 
-  static QuintCli locate(Optional<String> override, boolean windows) {
-    return new QuintCli(override.filter(s -> !s.isBlank()).orElse(windows ? "quint.cmd" : "quint"));
-  }
-
-  static boolean isWindows(String osName) {
-    return Executables.isWindows(osName);
+  static ApalacheCli locate(Optional<String> override, boolean windows) {
+    return new ApalacheCli(
+        override.filter(s -> !s.isBlank()).orElse(windows ? "apalache-mc.bat" : "apalache-mc"));
   }
 
   /** The executable name or path passed to the process builder. */
@@ -70,18 +70,13 @@ public final class QuintCli {
   }
 
   /**
-   * Prepends the executable to the arguments produced by {@link GenConfig#toCommand(Path)}.
+   * Prepends the executable to the arguments produced by {@link ApalacheConfig#toCommand(Path)}.
    *
    * @param config the run configuration
    * @param outDir directory that receives the traces
    * @return the full command line
-   * @throws IllegalArgumentException if {@code config} is an {@link ApalacheConfig}
    */
-  public List<String> command(GenConfig config, Path outDir) {
-    if (config instanceof ApalacheConfig) {
-      throw new IllegalArgumentException(
-          "ApalacheConfig must be run with ApalacheTraceGenerator, not the Quint CLI");
-    }
+  public List<String> command(ApalacheConfig config, Path outDir) {
     List<String> cmd = new ArrayList<>();
     cmd.add(executable);
     cmd.addAll(config.toCommand(outDir));
@@ -108,6 +103,6 @@ public final class QuintCli {
 
   @Override
   public String toString() {
-    return "QuintCli[" + executable + "]";
+    return "ApalacheCli[" + executable + "]";
   }
 }

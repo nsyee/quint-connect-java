@@ -27,6 +27,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
@@ -68,7 +69,16 @@ public final class TraceSource implements Closeable {
    * contents, on {@link #close()}.
    */
   public static TraceSource ofTempDirectory(Path tempDir) {
-    return new TraceSource(listTraceFiles(tempDir), Optional.of(tempDir));
+    return ofTempDirectory(tempDir, name -> true);
+  }
+
+  /**
+   * Like {@link #ofTempDirectory(Path)}, keeping only the {@code *.itf.json} files whose name is
+   * accepted by {@code fileNameFilter}. Closing still deletes the whole directory.
+   */
+  public static TraceSource ofTempDirectory(Path tempDir, Predicate<String> fileNameFilter) {
+    Objects.requireNonNull(fileNameFilter, "fileNameFilter");
+    return new TraceSource(listTraceFiles(tempDir, fileNameFilter), Optional.of(tempDir));
   }
 
   /** The trace files, in replay order. */
@@ -102,9 +112,14 @@ public final class TraceSource implements Closeable {
   }
 
   static List<Path> listTraceFiles(Path dir) {
+    return listTraceFiles(dir, name -> true);
+  }
+
+  private static List<Path> listTraceFiles(Path dir, Predicate<String> fileNameFilter) {
     try (Stream<Path> entries = Files.list(dir)) {
       return entries
           .filter(p -> p.getFileName().toString().endsWith(".itf.json"))
+          .filter(p -> fileNameFilter.test(p.getFileName().toString()))
           .filter(Files::isRegularFile)
           .sorted(ORDER)
           .toList();

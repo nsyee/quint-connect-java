@@ -430,7 +430,9 @@ The design above already supports this without API changes:
   extraction mode that Choreo specs use today.
 - Type hints in ITF `#meta.varTypes` can later feed `ItfMapper` diagnostics.
 
-This is scheduled as an optional, last PR in the work plan.
+Implemented in PR10 (`ApalacheConfig`, `ApalacheCli`, `ApalacheTraceGenerator`,
+`docs/apalache.md`); Apalache 0.62 writes the ITF traces into its `--run-dir`,
+so no `--out-itf` flag is needed.
 
 ## 10. Open questions / decisions to confirm
 
