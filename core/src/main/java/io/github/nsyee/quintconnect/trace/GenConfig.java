@@ -22,24 +22,26 @@ import java.util.List;
  * Configuration of a trace generation run.
  *
  * <p>Mirrors the {@code Config} trait of the Rust crate: every configuration knows its seed, how
- * many traces it asks for and how to turn itself into a Quint command line.
+ * many traces it asks for and how to turn itself into a command line for its trace generator
+ * ({@code quint run} / {@code quint test} for {@link RunConfig} / {@link TestConfig}, {@code
+ * apalache-mc} for {@link ApalacheConfig}).
  */
-public sealed interface GenConfig permits RunConfig, TestConfig {
+public sealed interface GenConfig permits RunConfig, TestConfig, ApalacheConfig {
 
   /** Number of traces generated when {@code maxSamples} is not given. */
   int DEFAULT_TRACES = 100;
 
-  /** The random seed passed to Quint (as written on the command line). */
+  /** The random seed passed to the generator (as written on the command line). */
   String seed();
 
-  /** The number of traces this configuration asks Quint for. */
+  /** The number of traces this configuration asks the generator for. */
   int nTraces();
 
   /**
-   * Builds the Quint command line that writes the traces into {@code outDir}.
+   * Builds the command line that writes the traces into {@code outDir}.
    *
-   * <p>The first element is the sub-command ({@code run} or {@code test}); the executable itself is
-   * prepended by {@link QuintCli}.
+   * <p>The executable itself is not included; it is prepended by {@link QuintCli} or {@link
+   * ApalacheCli}.
    *
    * @param outDir directory that receives the {@code *.itf.json} files
    * @return the arguments, without the executable

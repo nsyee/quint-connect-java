@@ -13,11 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-/**
- * Trace generation: configuration of {@code quint run} / {@code quint test} and {@code apalache-mc}
- * invocations, the {@link io.github.nsyee.quintconnect.trace.TraceGenerator} abstraction and its
- * CLI-backed ({@link io.github.nsyee.quintconnect.trace.QuintTraceGenerator}, {@link
- * io.github.nsyee.quintconnect.trace.ApalacheTraceGenerator}) and file-backed implementations.
- */
 package io.github.nsyee.quintconnect.trace;
+
+/** The Apalache sub-command an {@link ApalacheConfig} runs to produce traces. */
+public enum ApalacheMode {
+  /** {@code apalache-mc simulate --output-traces}: one example trace per random run. */
+  SIMULATE("simulate"),
+  /** {@code apalache-mc check}: one trace per invariant violation. */
+  CHECK("check");
+
+  private final String command;
+
+  ApalacheMode(String command) {
+    this.command = command;
+  }
+
+  /** The sub-command name on the command line. */
+  public String command() {
+    return command;
+  }
+}
