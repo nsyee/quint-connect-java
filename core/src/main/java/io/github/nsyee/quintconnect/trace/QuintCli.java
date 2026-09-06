@@ -15,12 +15,9 @@
  */
 package io.github.nsyee.quintconnect.trace;
 
-import java.nio.file.Files;
-import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
 
 /**
@@ -51,10 +48,7 @@ public final class QuintCli {
 
   /** Resolves the executable from {@code QUINT_BIN} or the default name for this OS. */
   public static QuintCli locate() {
-    return locate(
-        Optional.ofNullable(System.getProperty(QUINT_BIN))
-            .or(() -> Optional.ofNullable(System.getenv(QUINT_BIN))),
-        isWindows(System.getProperty("os.name", "")));
+    return locate(Executables.override(QUINT_BIN), Executables.isWindows());
   }
 
   /** Uses the given executable as-is (name on {@code PATH} or a path). */
@@ -67,7 +61,7 @@ public final class QuintCli {
   }
 
   static boolean isWindows(String osName) {
-    return osName.toLowerCase(Locale.ROOT).contains("win");
+    return Executables.isWindows(osName);
   }
 
   /** The executable name or path passed to the process builder. */
@@ -81,8 +75,13 @@ public final class QuintCli {
    * @param config the run configuration
    * @param outDir directory that receives the traces
    * @return the full command line
+   * @throws IllegalArgumentException if {@code config} is an {@link ApalacheConfig}
    */
   public List<String> command(GenConfig config, Path outDir) {
+    if (config instanceof ApalacheConfig) {
+      throw new IllegalArgumentException(
+          "ApalacheConfig must be run with ApalacheTraceGenerator, not the Quint CLI");
+    }
     List<String> cmd = new ArrayList<>();
     cmd.add(executable);
     cmd.addAll(config.toCommand(outDir));
@@ -104,44 +103,7 @@ public final class QuintCli {
   }
 
   Optional<Path> resolve(String pathEnv, String pathExt) {
-    Path candidate;
-    try {
-      candidate = Path.of(executable);
-    } catch (InvalidPathException e) {
-      return Optional.empty();
-    }
-    if (candidate.getNameCount() > 1 || candidate.isAbsolute()) {
-      return Files.isRegularFile(candidate) ? Optional.of(candidate) : Optional.empty();
-    }
-    if (pathEnv == null) {
-      return Optional.empty();
-    }
-    List<String> suffixes = new ArrayList<>();
-    suffixes.add("");
-    if (pathExt != null) {
-      for (String ext : pathExt.split(java.io.File.pathSeparator, -1)) {
-        if (!ext.isBlank()) {
-          suffixes.add(ext);
-        }
-      }
-    }
-    for (String dir : pathEnv.split(java.io.File.pathSeparator, -1)) {
-      if (dir.isBlank()) {
-        continue;
-      }
-      for (String suffix : suffixes) {
-        Path file;
-        try {
-          file = Path.of(dir, executable + suffix);
-        } catch (InvalidPathException e) {
-          continue;
-        }
-        if (Files.isRegularFile(file)) {
-          return Optional.of(file);
-        }
-      }
-    }
-    return Optional.empty();
+    return Executables.resolve(executable, pathEnv, pathExt);
   }
 
   @Override

@@ -15,8 +15,9 @@
  */
 
 /**
- * Trace generation: configuration of {@code quint run} / {@code quint test} invocations, the {@link
- * io.github.nsyee.quintconnect.trace.TraceGenerator} abstraction and its CLI-backed and file-backed
- * implementations.
+ * Trace generation: configuration of {@code quint run} / {@code quint test} and {@code apalache-mc}
+ * invocations, the {@link io.github.nsyee.quintconnect.trace.TraceGenerator} abstraction and its
+ * CLI-backed ({@link io.github.nsyee.quintconnect.trace.QuintTraceGenerator}, {@link
+ * io.github.nsyee.quintconnect.trace.ApalacheTraceGenerator}) and file-backed implementations.
  */
 package io.github.nsyee.quintconnect.trace;

@@ -14,14 +14,18 @@ when it is not.
 
 - [Design](docs/design.md)
 - [Work plan](docs/work-plan.md)
+- [Apalache / TLA+ traces](docs/apalache.md)
 - [Changelog](CHANGELOG.md)
-- [Examples](examples/) — `tictactoe` and `two_phase_commit`
+- [Examples](examples/) — `tictactoe`, `two_phase_commit` and the TLA+ `counter`
 
 ## Requirements
 
 - Java 21 or newer.
 - The Quint CLI on `PATH`: `npm i -g @informalsystems/quint` (or point
   `QUINT_BIN` at it, see [Configuration](#configuration)).
+- Optionally [Apalache](https://apalache-mc.org/) on `PATH` (or `APALACHE_BIN`)
+  to generate traces from TLA+ specifications, see
+  [docs/apalache.md](docs/apalache.md).
 - JUnit 5 for the `quint-connect-junit` module. The `core` module has no test
   framework dependency and can be used from any runner or a plain `main`.
 
@@ -31,7 +35,7 @@ when it is not.
 | ---------- | ------------------------------------- | -------------------------------------------------------- |
 | `core`     | `io.github.nsyee:quint-connect-core`  | ITF parsing, trace generation, framework-agnostic runner |
 | `junit`    | `io.github.nsyee:quint-connect-junit` | JUnit 5 extension (`@QuintRun`, `@QuintTest`)            |
-| `examples` | not published                         | tictactoe and two-phase-commit ports                     |
+| `examples` | not published                         | tictactoe, two-phase-commit ports and a TLA+ counter     |
 
 The artifacts are not published yet (see PR9 in the [work plan](docs/work-plan.md));
 until they are, consume the modules through a
@@ -360,20 +364,32 @@ The Quint CLI is looked up as `quint` on `PATH` (`quint.cmd` on Windows).
 `QUINT_BIN` (environment variable or system property) overrides the executable,
 for instance to use a project-local install or a wrapper script.
 
+### Apalache / TLA+ specifications
+
+`ApalacheTraceGenerator` runs `apalache-mc simulate` or `apalache-mc check`
+(`ApalacheConfig.simulate(spec, seed)` / `ApalacheConfig.check(spec, seed)`)
+and replays the ITF traces Apalache writes. The specification must record the
+action it took in a sum-type-shaped variable such as `mbt_action_taken`, which
+the driver selects with `DriverConfig.nondetPath("mbt_action_taken")`. The
+executable is `apalache-mc` on `PATH` (`apalache-mc.bat` on Windows) or
+`APALACHE_BIN`. See [docs/apalache.md](docs/apalache.md) and the
+[`counter` example](examples/src/test/java/io/github/nsyee/quintconnect/examples/counter).
+
 ## Building this repository
 
 Requirements: JDK 21 or newer to run Gradle (the Java 21 compile/test
 toolchain itself is provisioned automatically via foojay) and, for the
-integration tests, the Quint CLI on `PATH`.
+integration tests, the Quint CLI and Apalache on `PATH`.
 
 ```sh
 ./gradlew spotlessCheck check   # format check, Error Prone, tests
 ./gradlew spotlessApply         # fix formatting
 ./gradlew check -PskipQuint     # skip tests that need the Quint CLI
+./gradlew check -PskipApalache  # skip tests that need Apalache
 ```
 
-The tests tagged `quint` (the examples and the CLI integration tests) spawn the
-real CLI and are excluded by `-PskipQuint`.
+The tests tagged `quint` / `apalache` (the examples and the CLI integration
+tests) spawn the real CLI and are excluded by `-PskipQuint` / `-PskipApalache`.
 
 ## License
 
