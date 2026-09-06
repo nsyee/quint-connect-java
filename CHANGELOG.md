@@ -9,6 +9,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Apalache / TLA+ support (optional): `ApalacheConfig` (`simulate` / `check`,
+  `withInit`/`withNext`/`withCinit`/`withInvariants`/`withLength`/
+  `withMaxRuns`/`withMaxErrors`, seed passed as `smt.randomSeed`),
+  `ApalacheCli` executable lookup (`APALACHE_BIN`, `apalache-mc.bat` on
+  Windows) and `ApalacheTraceGenerator` (exit code 12 = invariant violated is
+  a success, only the numbered `example<i>`/`violation<i>` ITF files are
+  replayed). `TraceSource.ofTempDirectory(dir, filter)`. `docs/apalache.md`
+  documents the `mbt_action_taken` modelling convention and `\* @type`
+  annotations; the `examples` module gains a TLA+ `counter` driven through
+  `DriverConfig.nondetPath("mbt_action_taken")`. CI installs Apalache;
+  `-PskipApalache` excludes the tests tagged `apalache`.
 - Gradle multi-project skeleton (`core`, `junit`, `examples`), Java 21
   toolchain, Spotless (google-java-format) and Error Prone.
 - GitHub Actions CI on Ubuntu and Windows with the Quint CLI installed.

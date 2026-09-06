@@ -84,10 +84,14 @@ subprojects {
 
     tasks.withType<Test>().configureEach {
         useJUnitPlatform {
-            // Integration tests that spawn the real Quint CLI are tagged "quint";
-            // -PskipQuint excludes them for environments without the CLI.
+            // Integration tests that spawn the real Quint / Apalache CLI are tagged
+            // "quint" / "apalache"; -PskipQuint / -PskipApalache exclude them for
+            // environments without the CLI.
             if (project.hasProperty("skipQuint")) {
                 excludeTags("quint")
+            }
+            if (project.hasProperty("skipApalache")) {
+                excludeTags("apalache")
             }
         }
         testLogging {

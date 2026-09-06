@@ -42,5 +42,18 @@ jobs:
       - name: Quint version
         run: quint --version
 
+      - name: Install Apalache
+        shell: bash
+        run: |
+          curl -sSL -o apalache.zip \
+            https://github.com/apalache-mc/apalache/releases/download/v${APALACHE_VERSION}/apalache-${APALACHE_VERSION}.zip
+          unzip -q apalache.zip -d "$RUNNER_TEMP"
+          echo "$RUNNER_TEMP/apalache-${APALACHE_VERSION}/bin" >> "$GITHUB_PATH"
+        env:
+          APALACHE_VERSION: 0.62.2
+
+      - name: Apalache version
+        run: apalache-mc version
+
       - name: Build and test
         run: ./gradlew spotlessCheck check --no-daemon
