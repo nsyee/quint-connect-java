@@ -59,5 +59,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   across traces, `replay(driver)`), `QuintConnectExtension.runner(...)` to
   swap the trace generator in tests, and the `QuintDynamicTests.of(...)`
   `@TestFactory` helper.
+- `examples` module: ports of the upstream `tictactoe` (sum types, non-string
+  map keys, optional picks) and `two_phase_commit` (Choreo spec,
+  `DriverConfig.statePath`/`nondetPath`, `@QuintRun` and `@QuintTest`)
+  examples with their `.qnt` specifications, run under the `quint` tag.
+- README with Quick Start, Tips and Tricks and Configuration sections.
 
 [Unreleased]: https://github.com/nsyee/quint-connect-java/compare/main...HEAD
