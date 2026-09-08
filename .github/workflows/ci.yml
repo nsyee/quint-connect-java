@@ -94,4 +94,4 @@ jobs:
         working-directory: parity/rust-harness
 
       - name: Cross-runtime parity tests
-        run: ./gradlew :core:parityTest --no-daemon
+        run: ./gradlew :quint-connect-core:parityTest --no-daemon
