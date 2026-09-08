@@ -17,7 +17,9 @@ package io.github.nsyee.quintconnect.trace;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import io.github.nsyee.quintconnect.parity.Parity;
 import java.nio.file.Path;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 
 /** Port of the unit tests in {@code trace/generator/run.rs}. */
@@ -77,6 +79,55 @@ class RunConfigTest {
         "quint run foo.qnt --seed 42 --max-samples 100 --n-traces 100"
             + " --out-itf tmpdir/run_{seq}.itf.json --mbt --verbosity 0 --max-steps 32",
         toString(basicConfig().withMaxSteps(32)));
+  }
+
+  /** The full command line documented in design.md §5.4: every flag, in this exact order. */
+  @Test
+  void allFlagsInDocumentedOrder() {
+    RunConfig config =
+        RunConfig.of(Path.of("spec/tictactoe.qnt"), "0x2a")
+            .withMaxSamples(7)
+            .withMain("simulation")
+            .withInit("my_init")
+            .withStep("my_step")
+            .withMaxSteps(32);
+    assertEquals(
+        List.of(
+            "run",
+            "spec/tictactoe.qnt",
+            "--seed",
+            "0x2a",
+            "--max-samples",
+            "7",
+            "--n-traces",
+            "7",
+            "--out-itf",
+            "tmpdir/run_{seq}.itf.json",
+            "--mbt",
+            "--verbosity",
+            "0",
+            "--main",
+            "simulation",
+            "--init",
+            "my_init",
+            "--step",
+            "my_step",
+            "--max-steps",
+            "32"),
+        config.toCommand(Path.of("tmpdir")).stream().map(s -> s.replace('\\', '/')).toList());
+  }
+
+  /**
+   * The command line quint-connect v0.1.2 really spawned for the golden run (captured by {@code
+   * parity/bin/quint}), compared argument by argument.
+   */
+  @Test
+  void matchesCommandSpawnedByRust() {
+    Path tmp = Path.of("tmp");
+    RunConfig config =
+        RunConfig.of(Path.of(Parity.HARNESS_SPEC), Parity.GOLDEN_SEED).withMaxSamples(1);
+    String captured = Parity.goldenText(Parity.GOLDEN_COMMAND).strip();
+    assertEquals(captured, Parity.normalizeCommand(QuintCli.of("quint").command(config, tmp), tmp));
   }
 
   @Test
