@@ -82,8 +82,11 @@ subprojects {
         }
     }
 
-    tasks.withType<Test>().configureEach {
+    // Cross-runtime parity tests (tag "parity") spawn the Rust reference
+    // implementation via cargo; they only run in the dedicated `parityTest` task.
+    tasks.named<Test>("test") {
         useJUnitPlatform {
+            excludeTags("parity")
             // Integration tests that spawn the real Quint / Apalache CLI are tagged
             // "quint" / "apalache"; -PskipQuint / -PskipApalache exclude them for
             // environments without the CLI.
@@ -94,6 +97,20 @@ subprojects {
                 excludeTags("apalache")
             }
         }
+    }
+
+    val testSourceSet = extensions.getByType<JavaPluginExtension>().sourceSets["test"]
+    tasks.register<Test>("parityTest") {
+        description = "Runs the @Tag(\"parity\") tests against the Rust quint-connect reference (needs quint + cargo)."
+        group = "verification"
+        testClassesDirs = testSourceSet.output.classesDirs
+        classpath = testSourceSet.runtimeClasspath
+        useJUnitPlatform { includeTags("parity") }
+        systemProperty("quintconnect.parity.dir", rootProject.file("parity").absolutePath)
+        outputs.upToDateWhen { false }
+    }
+
+    tasks.withType<Test>().configureEach {
         testLogging {
             events("failed", "skipped")
             exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL

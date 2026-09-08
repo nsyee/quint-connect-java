@@ -1,0 +1,159 @@
+== Running model based tests for tictactoe
+   Generating 1 traces using `0x2a` as random seed ...
+   Replaying traces ...
+   [Trace 1]
+   [Step 0]
+   Action taken: init
+   Nondet picks: <none>
+   Next state:
+   + board: Map(1 -> Map(1 -> Empty, 2 -> Empty, 3 -> Empty), 2 -> Map(1 -> Empty, 2 -> Empty, 3 -> Empty), 3 -> Map(1 -> Empty, 2 -> Empty, 3 -> Empty))
+   + nextTurn: X
+
+   [Step 1]
+   Action taken: MoveX
+   Nondet picks:
+   + corner: (1, 1)
+   Next state:
+   + board: Map(1 -> Map(1 -> Occupied(X), 2 -> Empty, 3 -> Empty), 2 -> Map(1 -> Empty, 2 -> Empty, 3 -> Empty), 3 -> Map(1 -> Empty, 2 -> Empty, 3 -> Empty))
+   + nextTurn: O
+
+   [Step 2]
+   Action taken: MoveO
+   Nondet picks:
+   + coordinate: (2, 2)
+   Next state:
+   + board: Map(1 -> Map(1 -> Occupied(X), 2 -> Empty, 3 -> Empty), 2 -> Map(1 -> Empty, 2 -> Occupied(O), 3 -> Empty), 3 -> Map(1 -> Empty, 2 -> Empty, 3 -> Empty))
+   + nextTurn: X
+
+   [Step 3]
+   Action taken: MoveX
+   Nondet picks:
+   + coordinate: (3, 1)
+   + pattern: Set((1, 1), (2, 1), (3, 1))
+   Next state:
+   + board: Map(1 -> Map(1 -> Occupied(X), 2 -> Empty, 3 -> Empty), 2 -> Map(1 -> Empty, 2 -> Occupied(O), 3 -> Empty), 3 -> Map(1 -> Occupied(X), 2 -> Empty, 3 -> Empty))
+   + nextTurn: O
+
+   [Step 4]
+   Action taken: MoveO
+   Nondet picks:
+   + coordinate: (3, 3)
+   Next state:
+   + board: Map(1 -> Map(1 -> Occupied(X), 2 -> Empty, 3 -> Empty), 2 -> Map(1 -> Empty, 2 -> Occupied(O), 3 -> Empty), 3 -> Map(1 -> Occupied(X), 2 -> Empty, 3 -> Occupied(O)))
+   + nextTurn: X
+
+   [Step 5]
+   Action taken: MoveX
+   Nondet picks:
+   + coordinate: (2, 1)
+   + pattern: Set((1, 1), (2, 1), (3, 1))
+   Next state:
+   + board: Map(1 -> Map(1 -> Occupied(X), 2 -> Empty, 3 -> Empty), 2 -> Map(1 -> Occupied(X), 2 -> Occupied(O), 3 -> Empty), 3 -> Map(1 -> Occupied(X), 2 -> Empty, 3 -> Occupied(O)))
+   + nextTurn: O
+
+   [Step 6]
+   Action taken: stuttered
+   Nondet picks: <none>
+   Next state:
+   + board: Map(1 -> Map(1 -> Occupied(X), 2 -> Empty, 3 -> Empty), 2 -> Map(1 -> Occupied(X), 2 -> Occupied(O), 3 -> Empty), 3 -> Map(1 -> Occupied(X), 2 -> Empty, 3 -> Occupied(O)))
+   + nextTurn: O
+
+   [Step 7]
+   Action taken: stuttered
+   Nondet picks: <none>
+   Next state:
+   + board: Map(1 -> Map(1 -> Occupied(X), 2 -> Empty, 3 -> Empty), 2 -> Map(1 -> Occupied(X), 2 -> Occupied(O), 3 -> Empty), 3 -> Map(1 -> Occupied(X), 2 -> Empty, 3 -> Occupied(O)))
+   + nextTurn: O
+
+   [Step 8]
+   Action taken: stuttered
+   Nondet picks: <none>
+   Next state:
+   + board: Map(1 -> Map(1 -> Occupied(X), 2 -> Empty, 3 -> Empty), 2 -> Map(1 -> Occupied(X), 2 -> Occupied(O), 3 -> Empty), 3 -> Map(1 -> Occupied(X), 2 -> Empty, 3 -> Occupied(O)))
+   + nextTurn: O
+
+   [Step 9]
+   Action taken: stuttered
+   Nondet picks: <none>
+   Next state:
+   + board: Map(1 -> Map(1 -> Occupied(X), 2 -> Empty, 3 -> Empty), 2 -> Map(1 -> Occupied(X), 2 -> Occupied(O), 3 -> Empty), 3 -> Map(1 -> Occupied(X), 2 -> Empty, 3 -> Occupied(O)))
+   + nextTurn: O
+
+   [Step 10]
+   Action taken: stuttered
+   Nondet picks: <none>
+   Next state:
+   + board: Map(1 -> Map(1 -> Occupied(X), 2 -> Empty, 3 -> Empty), 2 -> Map(1 -> Occupied(X), 2 -> Occupied(O), 3 -> Empty), 3 -> Map(1 -> Occupied(X), 2 -> Empty, 3 -> Occupied(O)))
+   + nextTurn: O
+
+   [Step 11]
+   Action taken: stuttered
+   Nondet picks: <none>
+   Next state:
+   + board: Map(1 -> Map(1 -> Occupied(X), 2 -> Empty, 3 -> Empty), 2 -> Map(1 -> Occupied(X), 2 -> Occupied(O), 3 -> Empty), 3 -> Map(1 -> Occupied(X), 2 -> Empty, 3 -> Occupied(O)))
+   + nextTurn: O
+
+   [Step 12]
+   Action taken: stuttered
+   Nondet picks: <none>
+   Next state:
+   + board: Map(1 -> Map(1 -> Occupied(X), 2 -> Empty, 3 -> Empty), 2 -> Map(1 -> Occupied(X), 2 -> Occupied(O), 3 -> Empty), 3 -> Map(1 -> Occupied(X), 2 -> Empty, 3 -> Occupied(O)))
+   + nextTurn: O
+
+   [Step 13]
+   Action taken: stuttered
+   Nondet picks: <none>
+   Next state:
+   + board: Map(1 -> Map(1 -> Occupied(X), 2 -> Empty, 3 -> Empty), 2 -> Map(1 -> Occupied(X), 2 -> Occupied(O), 3 -> Empty), 3 -> Map(1 -> Occupied(X), 2 -> Empty, 3 -> Occupied(O)))
+   + nextTurn: O
+
+   [Step 14]
+   Action taken: stuttered
+   Nondet picks: <none>
+   Next state:
+   + board: Map(1 -> Map(1 -> Occupied(X), 2 -> Empty, 3 -> Empty), 2 -> Map(1 -> Occupied(X), 2 -> Occupied(O), 3 -> Empty), 3 -> Map(1 -> Occupied(X), 2 -> Empty, 3 -> Occupied(O)))
+   + nextTurn: O
+
+   [Step 15]
+   Action taken: stuttered
+   Nondet picks: <none>
+   Next state:
+   + board: Map(1 -> Map(1 -> Occupied(X), 2 -> Empty, 3 -> Empty), 2 -> Map(1 -> Occupied(X), 2 -> Occupied(O), 3 -> Empty), 3 -> Map(1 -> Occupied(X), 2 -> Empty, 3 -> Occupied(O)))
+   + nextTurn: O
+
+   [Step 16]
+   Action taken: stuttered
+   Nondet picks: <none>
+   Next state:
+   + board: Map(1 -> Map(1 -> Occupied(X), 2 -> Empty, 3 -> Empty), 2 -> Map(1 -> Occupied(X), 2 -> Occupied(O), 3 -> Empty), 3 -> Map(1 -> Occupied(X), 2 -> Empty, 3 -> Occupied(O)))
+   + nextTurn: O
+
+   [Step 17]
+   Action taken: stuttered
+   Nondet picks: <none>
+   Next state:
+   + board: Map(1 -> Map(1 -> Occupied(X), 2 -> Empty, 3 -> Empty), 2 -> Map(1 -> Occupied(X), 2 -> Occupied(O), 3 -> Empty), 3 -> Map(1 -> Occupied(X), 2 -> Empty, 3 -> Occupied(O)))
+   + nextTurn: O
+
+   [Step 18]
+   Action taken: stuttered
+   Nondet picks: <none>
+   Next state:
+   + board: Map(1 -> Map(1 -> Occupied(X), 2 -> Empty, 3 -> Empty), 2 -> Map(1 -> Occupied(X), 2 -> Occupied(O), 3 -> Empty), 3 -> Map(1 -> Occupied(X), 2 -> Empty, 3 -> Occupied(O)))
+   + nextTurn: O
+
+   [Step 19]
+   Action taken: stuttered
+   Nondet picks: <none>
+   Next state:
+   + board: Map(1 -> Map(1 -> Occupied(X), 2 -> Empty, 3 -> Empty), 2 -> Map(1 -> Occupied(X), 2 -> Occupied(O), 3 -> Empty), 3 -> Map(1 -> Occupied(X), 2 -> Empty, 3 -> Occupied(O)))
+   + nextTurn: O
+
+   [Step 20]
+   Action taken: stuttered
+   Nondet picks: <none>
+   Next state:
+   + board: Map(1 -> Map(1 -> Occupied(X), 2 -> Empty, 3 -> Empty), 2 -> Map(1 -> Occupied(X), 2 -> Occupied(O), 3 -> Empty), 3 -> Map(1 -> Occupied(X), 2 -> Empty, 3 -> Occupied(O)))
+   + nextTurn: O
+
+   [OK] tictactoe

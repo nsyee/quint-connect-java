@@ -1,0 +1,64 @@
+== Running model based tests for tictactoe_diverging
+   Generating 1 traces using `0x2a` as random seed ...
+   Replaying traces ...
+   [Trace 1]
+   [Step 0]
+   Action taken: init
+   Nondet picks: <none>
+   Next state:
+   + board: Map(1 -> Map(1 -> Empty, 2 -> Empty, 3 -> Empty), 2 -> Map(1 -> Empty, 2 -> Empty, 3 -> Empty), 3 -> Map(1 -> Empty, 2 -> Empty, 3 -> Empty))
+   + nextTurn: X
+
+   [Step 1]
+   Action taken: MoveX
+   Nondet picks:
+   + corner: (1, 1)
+   Next state:
+   + board: Map(1 -> Map(1 -> Occupied(X), 2 -> Empty, 3 -> Empty), 2 -> Map(1 -> Empty, 2 -> Empty, 3 -> Empty), 3 -> Map(1 -> Empty, 2 -> Empty, 3 -> Empty))
+   + nextTurn: O
+
+   [Step 2]
+   Action taken: MoveO
+   Nondet picks:
+   + coordinate: (2, 2)
+   Next state:
+   + board: Map(1 -> Map(1 -> Occupied(X), 2 -> Empty, 3 -> Empty), 2 -> Map(1 -> Empty, 2 -> Occupied(O), 3 -> Empty), 3 -> Map(1 -> Empty, 2 -> Empty, 3 -> Empty))
+   + nextTurn: X
+
+   Specification and implementation states diverge
+   --- specification
+   +++ implementation
+   @@ -1,24 +1,24 @@
+    GameState {
+        board: {
+            1: {
+                1: Occupied(
+                    X,
+                ),
+                2: Empty,
+                3: Empty,
+            },
+            2: {
+                1: Empty,
+                2: Occupied(
+                    O,
+                ),
+                3: Empty,
+            },
+            3: {
+                1: Empty,
+                2: Empty,
+                3: Empty,
+            },
+        },
+   -    next_turn: X,
+   +    next_turn: O,
+    }
+
+   [FAIL] tictactoe_diverging 
+   Reproduce this error with `QUINT_SEED=0x2a`
+
+
+thread 'tictactoe_diverging' (16545) panicked at tests/tictactoe.rs:28:1:
+State invariant failed
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace

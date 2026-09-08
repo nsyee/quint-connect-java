@@ -57,3 +57,41 @@ jobs:
 
       - name: Build and test
         run: ./gradlew spotlessCheck check --no-daemon
+
+  parity:
+    name: parity (Rust quint-connect v0.1.2)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          validate-wrappers: true
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install Quint CLI
+        run: npm i -g @informalsystems/quint
+
+      - name: Quint version
+        run: quint --version
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: parity/rust-harness
+
+      - name: Build Rust reference harness (quint-connect v0.1.2)
+        run: cargo build --tests
+        working-directory: parity/rust-harness
+
+      - name: Cross-runtime parity tests
+        run: ./gradlew :quint-connect-core:parityTest --no-daemon

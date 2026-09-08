@@ -57,6 +57,32 @@ class QuintCliTest {
     assertEquals("foo.qnt", cmd.get(2));
   }
 
+  /** Rust: {@code Command::new("quint")} followed by the config arguments, nothing else. */
+  @Test
+  void fullCommandLinesMatchDesignDocument() {
+    Path tmp = Path.of("tmp");
+    assertEquals(
+        "quint run foo.qnt --seed 42 --max-samples 100 --n-traces 100"
+            + " --out-itf tmp/run_{seq}.itf.json --mbt --verbosity 0",
+        join(QuintCli.of("quint").command(RunConfig.of(Path.of("foo.qnt"), "42"), tmp)));
+    assertEquals(
+        "quint test foo.qnt --seed 42 --match ^happyTest$ --max-samples 100"
+            + " --out-itf tmp/test_{seq}.itf.json --verbosity 0",
+        join(
+            QuintCli.of("quint")
+                .command(TestConfig.of(Path.of("foo.qnt"), "happyTest", "42"), tmp)));
+    assertEquals(
+        "quint.cmd run foo.qnt --seed 42 --max-samples 100 --n-traces 100"
+            + " --out-itf tmp/run_{seq}.itf.json --mbt --verbosity 0",
+        join(
+            QuintCli.locate(Optional.empty(), true)
+                .command(RunConfig.of(Path.of("foo.qnt"), "42"), tmp)));
+  }
+
+  private static String join(List<String> command) {
+    return String.join(" ", command).replace('\\', '/');
+  }
+
   @Test
   void resolvesOnPath(@TempDir Path dir) throws Exception {
     Path bin = dir.resolve("bin");

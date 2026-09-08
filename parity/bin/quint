@@ -1,0 +1,82 @@
+#!/usr/bin/env bash
+# Copyright 2026 the quint-connect-java authors
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# `quint` shim placed first on PATH while the Rust harness runs.
+#
+# quint-connect (Rust) writes its ITF traces into a temporary directory that is
+# deleted as soon as the traces have been replayed. This shim records the exact
+# command line the Rust crate spawned and copies the produced *.itf.json files
+# to $QUINT_CAPTURE_DIR before returning, so the traces the Rust runner really
+# replayed can be committed as golden fixtures.
+#
+# Required env: QUINT_CAPTURE_DIR (output directory), QUINT_REAL (path of the
+# real quint executable; defaults to the next `quint` on PATH after this dir).
+set -euo pipefail
+
+here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+real="${QUINT_REAL:-}"
+if [[ -z "$real" ]]; then
+  while IFS= read -r candidate; do
+    if [[ "$(cd "$(dirname "$candidate")" && pwd)" != "$here" ]]; then
+      real="$candidate"
+      break
+    fi
+  done < <(which -a quint)
+fi
+if [[ -z "$real" ]]; then
+  echo "quint shim: real quint executable not found on PATH" >&2
+  exit 127
+fi
+
+capture="${QUINT_CAPTURE_DIR:?QUINT_CAPTURE_DIR must be set}"
+mkdir -p "$capture"
+
+out_itf=""
+prev=""
+for arg in "$@"; do
+  if [[ "$prev" == "--out-itf" ]]; then
+    out_itf="$arg"
+  fi
+  prev="$arg"
+done
+
+# One line per invocation; the temp dir is replaced by a placeholder.
+{
+  printf 'quint'
+  for arg in "$@"; do
+    if [[ -n "$out_itf" && "$arg" == "$out_itf" ]]; then
+      printf ' <tmp>/%s' "$(basename "$out_itf")"
+    else
+      printf ' %s' "$arg"
+    fi
+  done
+  printf '\n'
+} >> "$capture/commands.txt"
+
+set +e
+"$real" "$@"
+status=$?
+set -e
+
+if [[ -n "$out_itf" ]]; then
+  dir="$(dirname "$out_itf")"
+  pattern="$(basename "$out_itf")"
+  glob="${pattern//\{seq\}/*}"
+  for f in "$dir"/$glob; do
+    [[ -e "$f" ]] && cp "$f" "$capture/$(basename "$f")"
+  done
+fi
+
+exit "$status"
