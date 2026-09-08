@@ -18,6 +18,7 @@ package io.github.nsyee.quintconnect.trace;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.nio.file.Path;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 
 /** Port of the unit tests in {@code trace/generator/test.rs}. */
@@ -45,6 +46,40 @@ class TestConfigTest {
         "quint test foo.qnt --seed 42 --match ^happyTest$ --max-samples 100"
             + " --out-itf tmpdir/test_{seq}.itf.json --verbosity 0 --main tests",
         toString(basicConfig().withMain("tests")));
+  }
+
+  /** The full command line documented in design.md §5.4: every flag, in this exact order. */
+  @Test
+  void allFlagsInDocumentedOrder() {
+    TestConfig config =
+        TestConfig.of(Path.of("spec/two_phase_commit.qnt"), "commitTest", "0x2a")
+            .withMaxSamples(7)
+            .withMain("tests");
+    assertEquals(
+        List.of(
+            "test",
+            "spec/two_phase_commit.qnt",
+            "--seed",
+            "0x2a",
+            "--match",
+            "^commitTest$",
+            "--max-samples",
+            "7",
+            "--out-itf",
+            "tmpdir/test_{seq}.itf.json",
+            "--verbosity",
+            "0",
+            "--main",
+            "tests"),
+        config.toCommand(Path.of("tmpdir")).stream().map(s -> s.replace('\\', '/')).toList());
+  }
+
+  /** {@code quint test} never passes {@code --mbt} or {@code --n-traces}. */
+  @Test
+  void noSimulationOnlyFlags() {
+    List<String> cmd = basicConfig().toCommand(Path.of("tmpdir"));
+    assertEquals(
+        List.of(), cmd.stream().filter(a -> a.equals("--mbt") || a.equals("--n-traces")).toList());
   }
 
   @Test

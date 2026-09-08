@@ -295,7 +295,7 @@ public final class QuintConnect {
     if (!Objects.equals(spec, impl)) {
       StateDiff diff = StateDiff.of(canonical(spec), canonical(impl));
       logger.error("Specification and implementation states diverge");
-      logger.trace(1, diff.unified());
+      logger.trace(1, diff.unified() + "\n");
       throw new QuintConnectException(STATE_INVARIANT_FAILED, context, diff);
     }
   }

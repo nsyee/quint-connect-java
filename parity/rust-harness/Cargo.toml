@@ -1,0 +1,17 @@
+# Reference harness: runs the upstream Rust quint-connect (pinned to v0.1.2)
+# against the same tictactoe drivers as the Java tests, so that its ITF traces
+# and stderr logs can be captured as golden fixtures. See docs/parity.md.
+[package]
+name = "quint-connect-parity-harness"
+version = "0.1.0"
+edition = "2024"
+publish = false
+license = "Apache-2.0"
+
+[lib]
+path = "src/lib.rs"
+
+[dependencies]
+quint-connect = "=0.1.2"
+serde = { version = "1", features = ["derive"] }
+anyhow = "1"

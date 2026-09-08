@@ -413,6 +413,10 @@ The `.qnt` files are copied verbatim from upstream (Apache-2.0).
   seed hint; `QUINT_SEED` makes two runs produce identical traces.
 - A "bad spec" test asserts that an anonymous action in `step` yields the
   documented error.
+- Parity tests against the Rust crate itself (golden fixtures produced by
+  quint-connect 0.1.2 with a fixed seed, and a `@Tag("parity")` cross-runtime
+  harness that runs both implementations on the same seed), see
+  [parity.md](parity.md).
 
 ## 9. Extension point: Apalache / TLA+ traces
 
