@@ -1,0 +1,1 @@
+quint run ../../core/src/test/resources/spec/tictactoe.qnt --seed 0x2a --max-samples 1 --n-traces 1 --out-itf <tmp>/run_{seq}.itf.json --mbt --verbosity 0
